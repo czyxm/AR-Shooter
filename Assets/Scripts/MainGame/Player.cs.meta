@@ -3,7 +3,11 @@ guid: 731a017367ce9422787f3b9585788865
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healthText: {instanceID: 0}
+  - scoreText: {instanceID: 0}
+  - healthBar: {instanceID: 0}
+  - wave: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

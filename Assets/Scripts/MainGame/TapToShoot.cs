@@ -10,13 +10,13 @@ public class TapToShoot : MonoBehaviour
     private ParticleSystem right;
     private ParticleSystem left;
     private RaycastHit hit;
-    private AudioSource shootAudio;
+    private Player player;
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("AR Camera").GetComponent<Player>();
         right = GameObject.Find("GunFire_R").GetComponentInChildren<ParticleSystem>();
         left = GameObject.Find("GunFire_L").GetComponentInChildren<ParticleSystem>();
-        shootAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -35,11 +35,12 @@ public class TapToShoot : MonoBehaviour
             {
                 left.Play();
             }
-            shootAudio.Play();
+            FindObjectOfType<Devdog.General.AudioManager>().Play("Shoot");
             isRightGun = !isRightGun;
             if(Physics.Raycast(Camera.main.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2)), out hit, 100.0f)) {
                 Enemy enemy = hit.transform.GetComponent<Enemy>();
-                enemy.health -= 100;
+                enemy.health -= player.attackPower;
+                enemy.healthBar.value = (float)enemy.health / enemy.healthMax;
             }
         }
     }

@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9043851311079602345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371115122553684485}
+  - component: {fileID: 1297708338140590204}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &371115122553684485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9043851311079602345}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1297708338140590204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9043851311079602345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5b2f6ce23db61428413652c07176e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: PlayerDamage0
+    audioClip: {fileID: 8300000, guid: ef980d09b569380459e609fe90ef1db2, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: PlayerDamage1
+    audioClip: {fileID: 8300000, guid: 25e8bbe95ad4f344abd4dd8d7c8636ab, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: PlayerDamage2
+    audioClip: {fileID: 8300000, guid: a7fae22399a6e1d448dc0dd2210f1dac, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: PlayerWalk
+    audioClip: {fileID: 8300000, guid: f404f8d3c2a4b4f48989fb1120e78fb8, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: PlayerJump
+    audioClip: {fileID: 8300000, guid: 13b59a14d34add64d84a623867546ff1, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: EnemySpawn
+    audioClip: {fileID: 8300000, guid: 25722734eeccba042a18e26e376ca542, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: Shoot
+    audioClip: {fileID: 8300000, guid: a56e3c9f90e17894eb1625f603eceb54, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: EnemyDeath
+    audioClip: {fileID: 8300000, guid: 0a338d82d61863d4aa095317ca6ce19e, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: TurretDeath
+    audioClip: {fileID: 8300000, guid: 65b7d1df144c6944cab9d6686649df0b, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: TurretAlert
+    audioClip: {fileID: 8300000, guid: 7fac2ef5c59df1a45985d3eb894e8d47, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: WeaponShot
+    audioClip: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: WeaponChargeBuild
+    audioClip: {fileID: 8300000, guid: 7a0479c7c60da2d45b93a1af1afe6c1e, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: WeaponChargeLoop
+    audioClip: {fileID: 8300000, guid: b78fcf1f89aacdb468ce983629886f2d, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: WeaponExplosion
+    audioClip: {fileID: 8300000, guid: cba089de3eef16d46baeda4077140a74, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: WeaponRelease
+    audioClip: {fileID: 8300000, guid: 0cacf9e8e361eb24e9101b28422f7c08, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: WeaponShot
+    audioClip: {fileID: 8300000, guid: be87267ec54c5264daffd2ffeb91d6a7, type: 3}
+    source: {fileID: 0}
+    volume: 0.567
+    pitch: 1.6
+    loop: 0
+  - name: MainBackground
+    audioClip: {fileID: 8300000, guid: 8a82ca1f53ec8704384117b93dfd1fe2, type: 3}
+    source: {fileID: 0}
+    volume: 0.251
+    pitch: 1.01
+    loop: 1
+  - name: Theme
+    audioClip: {fileID: 8300000, guid: 25aae4cdba098124186819e2d4661edb, type: 3}
+    source: {fileID: 0}
+    volume: 0.251
+    pitch: 1.01
+    loop: 1
+  - name: Tick
+    audioClip: {fileID: 8300000, guid: 9987b10582c49e042bdcdb88296da529, type: 3}
+    source: {fileID: 0}
+    volume: 0.251
+    pitch: 1.01
+    loop: 1
+  - name: Click
+    audioClip: {fileID: 8300000, guid: 3f01be6994a0ab6448a945dbdd9b3cda, type: 3}
+    source: {fileID: 0}
+    volume: 0.251
+    pitch: 1.01
+    loop: 1

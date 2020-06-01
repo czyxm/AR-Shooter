@@ -1,15 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
+    public int type;
     public int health;
-    public float init_time = 3.0f;
-    public float speed = 1.0f;
-    public float radis = 2.0f;
-    public float hateRadis = 1.0f;
-    public int attackPower = 10;
+    public int healthMax;
+    public Slider healthBar;
+    public int exp;
+    public float init_time;
+    public float speed;
+    public float radis;
+    public float hateRadis;
+    public int attackPower;
+    public GameObject explosionEffect;
+    public static int finish = 0;
 
     private Player player;
     private enum EnemyMode {
@@ -24,19 +32,63 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("AR Camera").GetComponent<Player>();
-        target_dest = new Vector3(Random.Range(-radis, radis), Random.Range(radis, radis / 10), Random.Range(-radis, radis));
-        transform.LookAt(target_dest);
         //init_dest = new Vector3(0.0f, 10.0f, 0.0f);
         //Debug.Log(init_dest);
-        StartCoroutine(UpdateMode());
+        if (type > 0)
+        {
+            target_dest = new Vector3(Random.Range(-radis, radis), Random.Range(radis, radis / 10), Random.Range(-radis, radis));
+            transform.LookAt(target_dest);
+            StartCoroutine(UpdateMode());
+        }
+    }
+
+    void Awake()
+    {
+        if (type == 0)
+        {
+            finish = 0;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0)
+        if(health <= 0 || finish == 1)
         {
+            if (type == 0)
+            {
+                FindObjectOfType<Devdog.General.AudioManager>().Play("TurretDeath");
+            }
+            else
+            {
+                FindObjectOfType<Devdog.General.AudioManager>().Play("EnemyDeath");
+            }
+            Instantiate(explosionEffect, transform.position, transform.rotation);
+            player.score = (player.score + exp >= 10000) ? 9999 : player.score + exp;
+            if (type == 0 && finish == 0)
+            {
+                finish = 1;
+                FindObjectOfType<Devdog.General.AudioManager>().Stop("MainBackground");
+                FindObjectOfType<ScoreManager>().addEntry(player.playerName, player.score);
+                SceneManager.LoadScene("Fail");
+            }
             Destroy(gameObject);
+        }
+
+        if (player.attackPower == 50 && (player.score >= 1200 || (type == 0 && health < healthMax / 2f)))
+        {
+            gameObject.GetComponent<SpawnObject>().SpawnRound2();
+            player.attackPower = 100;
+        }
+        if (player.attackPower == 100 && (player.score >= 2500 || (type == 0 && health < healthMax / 4f)))
+        {
+            gameObject.GetComponent<SpawnObject>().SpawnRound3();
+            player.attackPower = 200;
+        }
+
+        if (type == 0)
+        {
+            return;
         }
 
         float step = speed * Time.deltaTime;
@@ -74,8 +126,9 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    player.health -= attackPower;
-                    GetComponent<AudioSource>().Play();
+                    player.health = player.health - attackPower;
+                    FindObjectOfType<Devdog.General.AudioManager>().Play("PlayerDamage" + (type == 1 ? "2" : "0"));
+                    Instantiate(player.wave, player.transform.position + player.transform.forward * 0.5f, player.transform.rotation);
                     Destroy(gameObject);
                 }
                 break;

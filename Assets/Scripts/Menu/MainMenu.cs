@@ -8,7 +8,10 @@ public class MainMenu : MonoBehaviour
 {
     public Slider BGMSlider;
 
-    public AudioSource BGMSource;
+    void Awake()
+    {
+        BGMSlider.value = 0.5f;
+    }
 
     public void StartGame()
     {
@@ -24,6 +27,6 @@ public class MainMenu : MonoBehaviour
 
     public void ChangeVolume()
     {
-        BGMSource.volume = BGMSlider.value;
+        FindObjectOfType<Devdog.General.AudioManager>().GlobalVolume = BGMSlider.value;
     }
 }

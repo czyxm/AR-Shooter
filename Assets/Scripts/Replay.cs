@@ -11,4 +11,9 @@ public class Replay : MonoBehaviour
         SceneManager.LoadScene("Loading");
     }
 
+    public void ReturnMenu()
+    {
+        Debug.Log("return");
+        SceneManager.LoadScene("MainMenu");
+    }
 }

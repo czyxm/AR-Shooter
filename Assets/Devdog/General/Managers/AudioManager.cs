@@ -8,27 +8,61 @@ using UnityEngine.Audio;
 
 namespace Devdog.General
 {
-    public partial class AudioManager : ManagerBase<AudioManager>
+    public class AudioManager : MonoBehaviour
     {
-        private static AudioSource[] _audioSources;
-        private static GameObject _audioSourceGameObject;
+        public static AudioManager Instance;
 
-        private static Queue<AudioClipInfo> _audioQueue = new Queue<AudioClipInfo>();
+        //private static AudioSource[] _audioSources;
+        //private static GameObject _audioSourceGameObject;
+        public AudioClipInfo[] sounds;
 
-        protected override void Awake()
+        [Range(0f, 1f)]
+        private float globalVolumn = 0.5f;
+
+        public float GlobalVolume
         {
-            base.Awake();
-
-            StartCoroutine(WaitFramesAndEnable(5));
-            enabled = false; // Set to enabled at start, initialize, then enable (to avoid playing sound during initialization)
-
-            _audioQueue = new Queue<AudioClipInfo>(GeneralSettingsManager.instance.settings.reserveAudioSources);
-            CreateAudioSourcePool();
+            get
+            {
+                return globalVolumn;
+            }
+            set
+            {
+                globalVolumn = value;
+                foreach (AudioClipInfo s in sounds)
+                {
+                    s.source.volume = s.volume * value;
+                }
+            }
         }
 
-        protected override void Start()
+        protected void Awake()
         {
-            base.Start();
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+            DontDestroyOnLoad(gameObject);
+
+            foreach (AudioClipInfo s in sounds)
+            {
+                s.source = gameObject.AddComponent<AudioSource>();
+                s.source.clip = s.audioClip;
+                s.source.volume = s.volume * globalVolumn;
+                s.source.pitch = s.pitch;
+                s.source.loop = s.loop;
+            }
+            StartCoroutine(WaitFramesAndEnable(5));
+            enabled = false; // Set to enabled at start, initialize, then enable (to avoid playing sound during initialization)
+            //Play("Theme");
+        }
+
+        protected void Start()
+        {
         }
 
         // Empty method to show enable / disable icons in Unity inspector.
@@ -44,42 +78,55 @@ namespace Devdog.General
             enabled = true;
         }
 
-        private void CreateAudioSourcePool()
+        //private void CreateAudioSourcePool()
+        //{
+        //    _audioSources = new AudioSource[GeneralSettingsManager.instance.settings.reserveAudioSources];
+
+        //    _audioSourceGameObject = new GameObject("_AudioSources");
+        //    _audioSourceGameObject.transform.SetParent(transform);
+        //    _audioSourceGameObject.transform.localPosition = Vector3.zero;
+
+        //    for (int i = 0; i < _audioSources.Length; i++)
+        //    {
+        //        _audioSources[i] = _audioSourceGameObject.AddComponent<AudioSource>();
+        //        _audioSources[i].outputAudioMixerGroup = GeneralSettingsManager.instance.settings.audioMixerGroup;
+        //    }
+        //}
+
+        //private static AudioSource GetNextAudioSource()
+        //{
+        //    foreach (var audioSource in _audioSources)
+        //    {
+        //        if (audioSource.isPlaying == false)
+        //            return audioSource;
+        //    }
+
+        //    DevdogLogger.LogWarning("All sources taken, can't play audio clip...");
+        //    return null;
+        //}
+        public AudioClipInfo FindClip(string name)
         {
-            _audioSources = new AudioSource[GeneralSettingsManager.instance.settings.reserveAudioSources];
-
-            _audioSourceGameObject = new GameObject("_AudioSources");
-            _audioSourceGameObject.transform.SetParent(transform);
-            _audioSourceGameObject.transform.localPosition = Vector3.zero;
-
-            for (int i = 0; i < _audioSources.Length; i++)
+            AudioClipInfo s = Array.Find(sounds, sound => sound.name == name);
+            if (s == null)
             {
-                _audioSources[i] = _audioSourceGameObject.AddComponent<AudioSource>();
-                _audioSources[i].outputAudioMixerGroup = GeneralSettingsManager.instance.settings.audioMixerGroup;
+                Debug.LogWarning("Audio clip " + name + " not found.");
+                return null;
             }
+            return s;
         }
 
-        protected void Update()
-        {
-            if (_audioQueue.Count > 0)
-            {
-                var source = GetNextAudioSource();
-                var clip = _audioQueue.Dequeue();
 
-                source.Play(clip);
-            }
+        public void Stop(string name)
+        {
+            FindClip(name).source.Stop();
         }
 
-        private static AudioSource GetNextAudioSource()
+        public void Play(string name)
         {
-            foreach (var audioSource in _audioSources)
+            if (!FindClip(name).source.isPlaying)
             {
-                if (audioSource.isPlaying == false)
-                    return audioSource;
+                FindClip(name).source.Play();
             }
-
-            DevdogLogger.LogWarning("All sources taken, can't play audio clip...");
-            return null;
         }
 
 
@@ -93,14 +140,9 @@ namespace Devdog.General
                 return;
             }
 
-            if (instance == null)
+            if (Instance == null)
             {
                 DevdogLogger.LogWarning("AudioManager not found, yet trying to play an audio clip....");
-            }
-
-            if (_audioQueue.Any(o => o.audioClip == clip.audioClip) == false)
-            {
-                _audioQueue.Enqueue(clip);
             }
         }
     }

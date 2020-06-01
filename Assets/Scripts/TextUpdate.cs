@@ -12,19 +12,20 @@ public class TextUpdate : MonoBehaviour
 
     public float time;
 
+
     void Start()
     {
         timeText.text = "load";
         StartCoroutine("LoadScene");
+        FindObjectOfType<Devdog.General.AudioManager>().Play("Tick");
     }
 
     void Update()
     {
         time -= Time.deltaTime;
-        timeText.text = time.ToString("0");
-        
-
+        timeText.text = time < 1f ? "1" : time.ToString("0");
     }
+
     IEnumerator LoadScene()
     {
 
@@ -33,7 +34,7 @@ public class TextUpdate : MonoBehaviour
         asy = SceneManager.LoadSceneAsync("MainGame");
         //不允许加载完毕自动切换场景，因为有时候加载太快了就看不到加载进度条UI效果了
         asy.allowSceneActivation = false;
-        while (asy.progress < 0.9f || time>=0.3)
+        while (asy.progress < 0.9f || time >= 0.5f)
         {
             yield return new WaitForEndOfFrame();
         }
